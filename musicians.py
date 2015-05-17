@@ -34,10 +34,29 @@ class Drummer(Musician):
     
 class Band(object):
   def __init__(self):
-    self.members = []
+    self.members = {}
     
-  def hire(self, musician):
-    self.members.append(musician)
+  def hire(self, role, musician):
+    self.members[role] = musician
     
-  def fire(self, musician):
-    pass
+  def fire(self, role):
+    if role in self.members:
+      del self.members[role]
+    
+  def play_music(self, length):
+    self.members['drummer'].count_to_four()
+    for role, musician in self.members.iteritems():
+      musician.solo(length)
+      
+if __name__ == '__main__':
+  bob = Drummer()
+  nigel = Guitarist()
+  john = Bassist()
+  the_the = Band()
+  the_the.hire('drummer', bob)
+  the_the.play_music(3)
+  the_the.hire('guitarist', nigel)
+  the_the.hire('bassist', john)
+  the_the.play_music(4)
+  the_the.fire('guitarist')
+  the_the.play_music(5)
